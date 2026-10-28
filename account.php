@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $row = $stmt->fetch();
 
     if (!$row || !password_verify($current, $row['password_hash'])) $pwErrors[] = 'Current password is incorrect.';
-    if (strlen($new) < 8) $pwErrors[] = 'New password must be at least 8 characters.';
+    $pwErrors = array_merge($pwErrors, password_errors($new));
     if ($new !== $confirm) $pwErrors[] = 'New passwords do not match.';
     if ($new !== '' && $new === $current) $pwErrors[] = 'New password must be different from your current one.';
 
@@ -78,6 +78,7 @@ require_once 'includes/header.php';
                     <div class="field">
                         <label for="new_password">New password</label>
                         <input type="password" id="new_password" name="new_password" minlength="8" required>
+                        <p class="hint">At least 8 characters with an uppercase letter, a lowercase letter, a number, and a symbol.</p>
                     </div>
                     <div class="field">
                         <label for="confirm_password">Confirm new password</label>

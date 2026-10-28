@@ -52,3 +52,15 @@ function get_flash() {
     }
     return null;
 }
+
+// password complexity
+// used on registration and change password
+function password_errors($pw) {
+    $errors = [];
+    if (strlen($pw) < 8)                       $errors[] = 'Password must be at least 8 characters.';
+    if (!preg_match('/[A-Z]/', $pw))           $errors[] = 'Password needs at least one uppercase letter.';
+    if (!preg_match('/[a-z]/', $pw))           $errors[] = 'Password needs at least one lowercase letter.';
+    if (!preg_match('/[0-9]/', $pw))           $errors[] = 'Password needs at least one number.';
+    if (!preg_match('/[^A-Za-z0-9]/', $pw))    $errors[] = 'Password needs at least one symbol (like ! or #).';
+    return $errors;
+}

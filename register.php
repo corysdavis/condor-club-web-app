@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($old['first_name'] === '' || $old['last_name'] === '') $errors[] = 'First and last name are required.';
     if (!filter_var($old['email'], FILTER_VALIDATE_EMAIL)) $errors[] = 'Please enter a valid email address.';
     if ($old['phone'] !== '' && strlen($old['phone']) !== 10) $errors[] = 'Phone number must be 10 digits.';
-    if (strlen($password) < 8) $errors[] = 'Password must be at least 8 characters.';
+    $errors = array_merge($errors, password_errors($password));
     if ($password !== $confirm) $errors[] = 'Passwords do not match.';
 
     // make sure the email isnt registered
@@ -94,6 +94,7 @@ require_once 'includes/header.php';
             <div class="field">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" minlength="8" required>
+                <p class="hint">At least 8 characters with an uppercase letter, a lowercase letter, a number, and a symbol.</p>
             </div>
             <div class="field">
                 <label for="confirm_password">Confirm password</label>
