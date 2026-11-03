@@ -30,6 +30,7 @@ function nav_class($file, $current) {
         <div class="account-nav">
             <?php if (is_logged_in()): ?>
                 <a href="account.php" class="<?= nav_class('account.php', $current) ?>">Hi, <?= e($_SESSION['first_name']) ?></a>
+                <a href="cart.php" class="<?= nav_class('cart.php', $current) ?>">Cart</a>
                 <a href="logout.php" class="btn btn-small btn-outline">Log Out</a>
             <?php else: ?>
                 <a href="login.php" class="<?= nav_class('login.php', $current) ?>">Log In</a>
