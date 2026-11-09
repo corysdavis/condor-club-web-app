@@ -8,16 +8,18 @@ $tiers = $pdo->query("SELECT tier_name, annual_price, early_access_hours, descri
 require_once 'includes/header.php';
 ?>
 
-<section class="hero">
-    <div class="container">
+<section class="hero-banner" role="img" aria-label="Condor Club">
+    <div class="container hero-banner-content">
         <div class="eyebrow">Fall Collection &middot; Releasing Nov 7</div>
         <p>Club Members shop 48 hours early<br>&amp; get a shot at our raffle-only releases.</p>
-        <a href="releases.php" class="btn">See Upcoming Releases</a>
-        <a href="register.php" class="btn btn-outline">Join the Club</a>
+        <div class="hero-actions">
+            <a href="releases.php" class="btn">See Upcoming Releases</a>
+            <a href="register.php" class="btn btn-outline">Join the Club</a>
+        </div>
     </div>
 </section>
 
-<section class="section">
+<section class="section membership">
     <div class="container">
         <div class="eyebrow">Membership</div>
         <h2 class="section-title">Pick your tier</h2>

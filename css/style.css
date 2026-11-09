@@ -150,3 +150,166 @@ input:focus { outline: 2px solid var(--brass); border-color: var(--brass); }
 @media (max-width: 760px) {
     .cart-row { grid-template-columns: 1fr 1fr; }
 }
+
+/* product grid & images */
+.grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.product-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* hero banner */
+.hero-banner {
+    position: relative;
+    background: url('../img/condor-club-hero.jpg') center / cover no-repeat;
+    height: 60vh;
+    min-height: 380px;
+    max-height: 560px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+.hero-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to bottom, transparent 3%, rgba(18, 41, 31, 0.9)),
+        rgba(18, 41, 31, 0.35);
+}
+.hero-banner-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: var(--cream);
+    padding-bottom: 44px;
+}
+.hero-banner .eyebrow { color: var(--brass); margin-bottom: 10px; }
+.hero-banner p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 22px; }
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* membership section on hero page */
+.membership { text-align: center; }
+.membership .grid {
+    grid-template-columns: repeat(2, minmax(0, 340px));
+    justify-content: center;
+}
+.membership .tier ul { display: inline-block; text-align: left; }
+
+@media (max-width: 760px) {
+    .membership .grid { grid-template-columns: 1fr; }
+}
+
+/* hero button hover  */
+.hero-actions .btn {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.hero-actions .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 0 3px rgba(184, 146, 90, 0.35);
+}
+.hero-actions .btn-outline:hover {
+    background: rgba(245, 241, 230, 0.12);
+}
+/* releases page */
+.releases-intro { text-align: center; padding-bottom: 32px; }
+
+.release-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+.release-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.release-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(18, 41, 31, 0.14); }
+
+.release-top {
+    background: radial-gradient(circle at 85% 15%, var(--green-soft), var(--green) 65%);
+    color: var(--cream);
+    padding: 36px 32px 30px;
+    text-align: center;
+}
+.release-top h2 { font-size: 1.9rem; margin: 10px 0 6px; }
+.release-date { opacity: 0.8; margin-bottom: 18px; }
+.release-countdown {
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    color: var(--brass);
+    border: 1px solid var(--brass);
+    border-radius: 6px;
+    padding: 8px 18px;
+}
+
+.release-body { padding: 28px 32px 32px; }
+.release-tagline { font-family: 'Fraunces', serif; font-size: 1.15rem; color: var(--green); margin-bottom: 16px; }
+.release-items { list-style: none; margin-bottom: 22px; }
+.release-items li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.release-items li::before { content: "— "; color: var(--brass); }
+.release-note {
+    background: var(--cream);
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.how-it-works {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    text-align: center;
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 40px 28px;
+}
+.step-num { font-family: 'Fraunces', serif; font-size: 2rem; color: var(--brass); }
+.how-it-works h3 { margin: 6px 0 4px; color: var(--green); }
+
+@media (max-width: 760px) {
+    .release-grid, .how-it-works { grid-template-columns: 1fr; }
+}
+/* raffle page */
+.raffle-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+.raffle-stage {
+    background: var(--green);
+    color: var(--cream);
+    border-radius: 10px;
+    padding: 56px 40px;
+    text-align: center;
+    width: 100%;
+    max-width: 640px;
+}
+.raffle-name { font-family: 'Fraunces', serif; font-size: 2.8rem; margin: 20px 0 28px; }
+.raffle-name.winner { color: var(--brass); }
+.raffle-result { background: var(--cream); color: var(--green); border-radius: 8px; padding: 18px; margin-top: 28px; }

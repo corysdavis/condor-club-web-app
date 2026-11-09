@@ -12,27 +12,47 @@ $email = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check();
-
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    $stmt = $pdo->prepare("SELECT member_id, first_name, password_hash, role FROM members WHERE email = ?");
+    $stmt = $pdo->prepare(
+        "SELECT member_id, first_name, password_hash, role, failed_logins,
+                (locked_until IS NOT NULL AND locked_until > NOW()) AS is_locked
+         FROM members WHERE email = ?"
+    );
     $stmt->execute([$email]);
     $member = $stmt->fetch();
 
-    if ($member && password_verify($password, $member['password_hash'])) {
+    if ($member && $member['is_locked']) {
+        // account is locked from too many failed attempts
+        $error = 'Too many failed attempts. Please try again in 15 minutes.';
 
+    } elseif ($member && password_verify($password, $member['password_hash'])) {
+        // password success - reset the counter and log in with a fresh session ID
+        $pdo->prepare("UPDATE members SET failed_logins = 0, locked_until = NULL WHERE member_id = ?")
+            ->execute([$member['member_id']]);
         session_regenerate_id(true);
         $_SESSION['member_id']  = (int)$member['member_id'];
         $_SESSION['first_name'] = $member['first_name'];
         $_SESSION['role']       = $member['role'];
-
         set_flash('Welcome back, ' . $member['first_name'] . '.');
         header('Location: account.php');
         exit;
-    }
 
-    $error = 'Incorrect email or password.';
+    } else {
+        // wrong password - count it and lock after 5 tries
+        if ($member) {
+            if ($member['failed_logins'] + 1 >= 5) {
+                $pdo->prepare("UPDATE members SET failed_logins = 0, locked_until = DATE_ADD(NOW(), INTERVAL 15 MINUTE) WHERE member_id = ?")
+                    ->execute([$member['member_id']]);
+            } else {
+                $pdo->prepare("UPDATE members SET failed_logins = failed_logins + 1 WHERE member_id = ?")
+                    ->execute([$member['member_id']]);
+            }
+        }
+        // same message either way
+        $error = 'Incorrect email or password.';
+    }
 }
 
 $pageTitle = 'Log In';
@@ -43,6 +63,7 @@ require_once 'includes/header.php';
     <div class="form-wrap card">
         <div class="eyebrow">Members</div>
         <h1>Log In</h1>
+        <p class="muted" style="margin-bottom:20px">Check your releases, cart, and orders.</p>
 
         <?php if ($error): ?>
             <ul class="errors"><li><?= e($error) ?></li></ul>

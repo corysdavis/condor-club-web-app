@@ -1,8 +1,17 @@
 <?php
 
 if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']);
     session_start();
 }
+
+// log users out after 30 mins of inactivity
+if (isset($_SESSION['member_id'], $_SESSION['last_activity']) && time() - $_SESSION['last_activity'] > 1800) {
+    $_SESSION = [];
+    session_regenerate_id(true);
+    $_SESSION['flash'] = ['message' => 'You were logged out after 30 minutes of inactivity.', 'type' => 'error'];
+}
+$_SESSION['last_activity'] = time();
 
 function e($value) {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');

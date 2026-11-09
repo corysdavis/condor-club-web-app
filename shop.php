@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check();
     $action = $_POST['action'] ?? '';
 
-    // for members to add a product to their cart
+    // members - add a product to their cart
     if ($action === 'add_to_cart') {
         require_login();
         $pid = (int)$_POST['product_id'];
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // for admin users to add or delete a product
+    // admins - add or delete a product
     require_admin();
 
     if ($action === 'add') {
@@ -97,8 +97,13 @@ require_once 'includes/header.php';
                     <?= csrf_field() ?>
                     <input type="hidden" name="action" value="add">
                     <div class="field"><label>Name</label><input type="text" name="name" required></div>
-                    <div class="field"><label>Category</label>
-                        <select name="category"><?php foreach ($categories as $c): ?><option><?= e($c) ?></option><?php endforeach; ?></select>
+                    <div class="field">
+                        <label>Category</label>
+                        <select name="category">
+                            <?php foreach ($categories as $c): ?>
+                                <option><?= e($c) ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                     <div class="field"><label>Collection</label><input type="text" name="collection" required></div>
                     <div class="field"><label>Color</label><input type="text" name="color" required></div>
@@ -114,7 +119,14 @@ require_once 'includes/header.php';
         <div class="grid">
             <?php foreach ($products as $p): ?>
                 <div class="card">
-                    <div class="product-img">CC</div>
+                    <div class="product-img">
+                        <?php if (!empty($p['image']) && file_exists('img/' . $p['image'])): ?>
+                            <img src="img/<?= e($p['image']) ?>" alt="<?= e($p['name']) ?>">
+                        <?php else: ?>
+                            <span><?= e($p['category']) ?></span>
+                        <?php endif; ?>
+                    </div>
+
                     <span class="tag"><?= $p['stock'] > 0 ? 'In Stock' : 'Sold Out' ?></span>
                     <h3><?= e($p['name']) ?></h3>
                     <p class="muted"><?= e($p['color']) ?> &middot; <?= e($p['collection']) ?></p>
